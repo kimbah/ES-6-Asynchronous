@@ -68,17 +68,34 @@ function getWeather (woeid) {
         .then((data) => {
             // console.log(data);
             const today = data.consolidated_weather[0];
-            console.log(`temperature in ${data.title} stay between ${today.min_temp} and ${today.max_temp}`);
+            console.log(
+                `Temperatures today in ${data.title} will stay between ${today.min_temp} and ${today.max_temp}`
+            );
         })
         .catch((error) => console.log(error));
 }
-getWeather(2487956);
-getWeather(44418);
+// getWeather(2487956);
+// getWeather(44418);
 
 async function getWeatherAW (woeid) {
-    const result = await window.fetch(
-        `https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`
-    );
+    try {
+        const result = await window.fetch(
+            `https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`
+        );
+        const data = await result.json();
+        // console.log(data);
+        const tomorrow = data.consolidated_weather[1];
+        console.log(
+            `Temperature tomorrow in ${data.title} will stay between ${tomorrow.min_temp} and ${tomorrow.max_temp}`
+        );
+        return data;
+    } catch (error) {
+        window.alert(error);
+    }
 }
 getWeatherAW(2487956);
-getWeatherAW(44418);
+let dataLondon;
+getWeatherAW(44418).then((data) => {
+    dataLondon = data;
+    console.log(dataLondon);
+});
